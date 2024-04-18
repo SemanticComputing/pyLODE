@@ -20,6 +20,8 @@ WORKDIR /app
 # install pyLODE from source, ensures we always use the latest development branch
 RUN python3 setup.py install
 
+RUN mkdir -p /app/venv/bin && ln -s /usr/local/bin/python /app/venv/bin/python
+
 RUN cd ./pylode
 
 EXPOSE 8000
