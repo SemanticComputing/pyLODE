@@ -1,7 +1,7 @@
 import collections
 from itertools import chain
 from jinja2 import Environment, FileSystemLoader
-from rdflib import SDO, SKOS, OWL, URIRef, RDF, PROF, Literal, XSD, Graph, Namespace, FOAF, Graph
+from rdflib import SDO, SKOS, OWL, RDFS, URIRef, RDF, PROF, Literal, XSD, Graph, Namespace, FOAF, Graph
 
 from pylode.common import TEMPLATES_DIR
 
@@ -278,6 +278,17 @@ class BaseProfile:
                 self.G.subjects(predicate=RDF.type, object=PROF.Profile)
             ):
                 default_uri = str(s)
+
+            if default_uri is None:
+                for s in chain(
+                    self.G.subjects(predicate=RDF.type, object=OWL.Class),
+                    self.G.subjects(predicate=RDF.type, object=RDFS.Class)
+                ):
+                    if "#" in s:
+                        default_uri = s.rsplit("#",1)[0]+"#"
+                    else:
+                        default_uri = s.rsplit("/",1)[0]+"/"
+                    break
 
             if default_uri is not None:
                 self.METADATA["default_namespace"] = default_uri

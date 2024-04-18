@@ -432,10 +432,13 @@ class OntDoc(BaseProfile):
                 # )
 
         if s_str is None:
-            raise Exception(
-                "Your RDF file does not define an ontology. "
-                "It must contains a declaration such as <...> rdf:type owl:Ontology ."
-            )
+            s_str = self.METADATA["default_namespace"]
+            self.METADATA["uri"] = s_str
+            self.METADATA["title"] = "{no title found}"
+            #raise Exception(
+            #    "Your RDF file does not define an ontology. "
+            #    "It must contains a declaration such as <...> rdf:type owl:Ontology ."
+            #)
 
     def _extract_classes_uris(self):
         classes = []
