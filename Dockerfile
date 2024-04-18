@@ -17,12 +17,18 @@ ADD . /app
 
 WORKDIR /app
 
+RUN sed -i 's/fh = logging.FileHandler("pylode\.log")/#fh = logging.FileHandler("pylode\.log")/' pylode/cli.py \
+ && sed -i 's/fh\.setFormatter/#fh\.setFormatter/' pylode/cli.py \
+ && sed -i 's/logger\.addHandler(fh)/#logger\.addHandler(fh)/' pylode/cli.py
+
 # install pyLODE from source, ensures we always use the latest development branch
 RUN python3 setup.py install
 
 RUN mkdir -p /app/venv/bin && ln -s /usr/local/bin/python /app/venv/bin/python
 
 RUN cd ./pylode
+
+USER 9008
 
 EXPOSE 8000
 
