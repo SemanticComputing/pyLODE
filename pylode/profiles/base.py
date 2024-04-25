@@ -568,11 +568,10 @@ class BaseProfile:
         # if the source is a URI, use that
         # if it's a file path, only use the file name
         if self.source_info[0].startswith("http"):
-            # as http://ldf.fi schema URIs are redirected to pyLODE, we can't use the schema URI as for RDF link
-            if self.source_info[0].startswith("http://ldf.fi/"):
-                uri_of_rdf = "http://ldf.fi/schema/data?graph=" + self.source_info[0]
-            else:
-                uri_of_rdf = self.source_info[0]
+            uri_of_rdf = self.source_info[0]
+            # as http://ldf.fi "schema" and http://purl.org/finlex/schema/ URIs are redirected to pyLODE, we need to set a URL param that can we be used (on those services) to identify that the request comes via pyLODE (to serve RDF instead of text/html that the browser is requesting)
+            if self.source_info[0].startswith("http://ldf.fi/") or self.source_info[0].startswith("http://purl.org/finlex/schema/"):
+                uri_of_rdf += "?referer=pylode"
         else:
             uri_of_rdf = self.source_info[0].split("/")[-1]
         if self.outputformat == "md":
