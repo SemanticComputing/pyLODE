@@ -569,8 +569,8 @@ class BaseProfile:
         # if it's a file path, only use the file name
         if self.source_info[0].startswith("http"):
             uri_of_rdf = self.source_info[0]
-            # as http://ldf.fi "schema" and http://purl.org/finlex/schema/ URIs are redirected to pyLODE, we need to set a URL param that can we be used (on those services) to identify that the request comes via pyLODE (to serve RDF instead of text/html that the browser is requesting)
-            if self.source_info[0].startswith("http://ldf.fi/") or self.source_info[0].startswith("http://purl.org/finlex/schema/"):
+            # as http://ldf.fi "schema" and http://schema.onki.fi URIs are redirected to pyLODE, we need to set a URL param that can we be used (on those services) to identify that the request comes via pyLODE (to serve RDF instead of text/html that the browser is requesting)
+            if self.source_info[0].startswith("http://ldf.fi/") or self.source_info[0].startswith("http://schema.onki.fi/"):
                 uri_of_rdf += "?referer=pylode"
         else:
             uri_of_rdf = self.source_info[0].split("/")[-1]
